@@ -49,6 +49,8 @@ GenQueue<Student*> *readStudents(string fileName)
     }
   }
 
+  inputFile.close();
+
   return students;
 }
 
