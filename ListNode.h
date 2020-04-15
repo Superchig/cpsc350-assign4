@@ -2,7 +2,7 @@
 template <class T>
 class ListNode {
 public:
-  int data;
+  T data;
   ListNode *next;
   ListNode *prev;
 

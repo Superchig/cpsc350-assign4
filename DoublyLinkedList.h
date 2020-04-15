@@ -1,11 +1,12 @@
 // Header equivalent
 #include "ListNode.h"
+#include "List.h"
 #include <iostream>
 
 using namespace std;
 
 template <class T>
-class DoublyLinkedList {
+class DoublyLinkedList : public List<T> {
 private:
   ListNode<T> *front;
   ListNode<T> *back;
@@ -17,11 +18,11 @@ public:
 
   void insertFront(T data);
   void insertBack(T data);
-  int removeFront();
+  T removeFront();
   // Will return value or position of node depending on implementation.
   int search(T val);
-  int remove(T value);
-  int removeAtPos(unsigned int pos);
+  T remove(T value);
+  T removeAtPos(unsigned int pos);
 
   unsigned int getSize();
   bool isEmpty();
@@ -107,7 +108,7 @@ void DoublyLinkedList<T>::insertBack(T data)
 }
 
 template <class T>
-int DoublyLinkedList<T>::removeFront()
+T DoublyLinkedList<T>::removeFront()
 {
   if (size <= 0) {
     cerr << "Error: Trying to remove item from list of " << size << " elements." << endl;
@@ -124,7 +125,7 @@ int DoublyLinkedList<T>::removeFront()
   }
 
   ListNode<T> *tmp = front;
-  int data = tmp->data;
+  T data = tmp->data;
   front = front->next;
   tmp->next = nullptr;
   delete tmp;
@@ -137,7 +138,7 @@ int DoublyLinkedList<T>::removeFront()
 // Need to find the value in the list before we can delete
 // This function does not in a position as a parameter
 template <class T>
-int DoublyLinkedList<T>::remove(T val)
+T DoublyLinkedList<T>::remove(T val)
 {
   ListNode<T> *curr = front;
 
@@ -171,7 +172,7 @@ int DoublyLinkedList<T>::remove(T val)
 
   curr->next = nullptr;
   curr->prev = nullptr;
-  int data = curr->data;
+  T data = curr->data;
   delete curr;
   --size;
   return data;
@@ -203,7 +204,7 @@ int DoublyLinkedList<T>::search(T value)
 }
 
 template <class T>
-int DoublyLinkedList<T>::removeAtPos(unsigned int pos)
+T DoublyLinkedList<T>::removeAtPos(unsigned int pos)
 {
   // Custom bounds-checking
   if (pos >= size) {
@@ -225,7 +226,7 @@ int DoublyLinkedList<T>::removeAtPos(unsigned int pos)
 
   prev->next = curr->next;
   curr->next = nullptr;
-  int temp = curr->data;
+  T temp = curr->data;
   delete curr;
   --size;
 

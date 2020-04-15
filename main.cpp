@@ -1,16 +1,18 @@
 #include <iostream>
-#include "DoublyLinkedList.h"
+#include "GenQueue.h"
 
 using namespace std;
 
 int main(int argc, char **argv)
 {
-  DoublyLinkedList<int> list;
-  list.insertFront(7);
-  list.insertFront(5);
-  list.insertFront(3);
+  GenQueue<int> q;
+  q.insert(3);
+  q.insert(2);
+  q.insert(1);
 
-  list.printList();
+  while (!q.isEmpty()) {
+    cout << q.remove() << endl;
+  }
 
   return 0;
 }
