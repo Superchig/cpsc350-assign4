@@ -3,7 +3,7 @@ CXX=g++
 
 all: assignment4.exe
 
-assignment4.exe: main.cpp
+assignment4.exe: main.cpp Student.cpp
 	$(CXX) $(CPPFLAGS) $^ -o $@
 
 test_list: test_list.cpp
