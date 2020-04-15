@@ -27,6 +27,9 @@ public:
   unsigned int getSize();
   bool isEmpty();
   void printList();
+
+  // Returns the item at front of the list, without removing it
+  T getFront();
 };
 
 // Implementation of template class
@@ -231,4 +234,10 @@ T DoublyLinkedList<T>::removeAtPos(unsigned int pos)
   --size;
 
   return temp;
+}
+
+template <class T>
+T DoublyLinkedList<T>::getFront()
+{
+  return front->data;
 }

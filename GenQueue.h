@@ -22,10 +22,6 @@ public:
   int getSize();
 };
 
-// FIXME: Finish implementing queue with doubly-linked list.
-// peek(), getSize()
-// May want to implement a peek() equivalent in DoublyLinkedList
-
 template <class T>
 GenQueue<T>::GenQueue()
 {
@@ -56,7 +52,14 @@ bool GenQueue<T>::isEmpty()
   return items->isEmpty();
 }
 
-// template <class T>
-// T GenQueue<T>::peek() {
-//   return items->front();
-// }
+template <class T>
+T GenQueue<T>::peek()
+{
+  return items->getFront();
+}
+
+template <class T>
+int GenQueue<T>::getSize()
+{
+  return items->getSize();
+}

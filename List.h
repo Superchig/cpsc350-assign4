@@ -16,4 +16,6 @@ public:
   virtual unsigned int getSize() = 0;
   virtual bool isEmpty() = 0;
   virtual void printList() = 0;
+
+  virtual T getFront() = 0;
 };
