@@ -14,11 +14,10 @@ GenQueue<Student*> *readStudents(string fileName)
     return nullptr;
   }
 
-  // FIXME: Move this segment into the main method, where the number of windows
-  // can be more readily accessed?
-  // Read the first number in as number of windows
-  int numWindows = 0;
-  inputFile >> numWindows;
+  // This variable isn't used in this function. It simply reads in the first line
+  // so that future lines can be read in.
+  int numWindowsUnused = 0;
+  inputFile >> numWindowsUnused;
 
   GenQueue<Student*> *students = new GenQueue<Student*>();
   while (true) {
@@ -62,6 +61,13 @@ int main(int argc, char **argv)
   }
 
   string fileName = argv[1];
+
+  // Read in the number of windows
+  int numWindows;
+  ifstream inputFile{fileName};
+  inputFile >> numWindows;
+  inputFile.close();
+
   GenQueue<Student*> *students = readStudents(fileName);
 
   cout << students->getSize() << endl;
