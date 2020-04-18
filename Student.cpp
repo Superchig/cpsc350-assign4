@@ -1,6 +1,9 @@
 #include "Student.h"
+#include <iostream>
 
-Student::Student() : timeNeeded(-1), enterTime(-1), exitTime(-1)
+using namespace std;
+
+Student::Student() : timeNeeded(-1), enterTime(-1)
 {
 }
 
@@ -14,11 +17,6 @@ int Student::getEnterTime()
   return enterTime;
 }
 
-int Student::getExitTime()
-{
-  return exitTime;
-}
-
 void Student::setTimeNeeded(int timeNeeded)
 {
   this->timeNeeded = timeNeeded;
@@ -29,12 +27,13 @@ void Student::setEnterTime(int enterTime)
   this->enterTime = enterTime;
 }
 
-void Student::setExitTime(int exitTime)
-{
-  this->exitTime = exitTime;
-}
-
 void Student::modTimeNeeded(int amount)
 {
   this->timeNeeded += amount;
+}
+
+void Student::printStudent()
+{
+  cout << "Student with enterTime: " << enterTime << endl;
+  cout << "\ttimeNeeded: " << timeNeeded << endl;
 }

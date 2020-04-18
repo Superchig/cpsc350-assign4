@@ -45,6 +45,8 @@ GenQueue<Student *> *readStudents(string fileName)
       enteringStudent->setEnterTime(tickTime);
 
       students->insert(enteringStudent);
+
+      // enteringStudent->printStudent();
     }
   }
 
@@ -53,6 +55,8 @@ GenQueue<Student *> *readStudents(string fileName)
   return students;
 }
 
+// Return whether or not an array of windows has one that is empty (has no
+// student)
 bool hasEmptyWindow(Window *windows, int size)
 {
   for (int i = 0; i < size; ++i) {
@@ -64,6 +68,8 @@ bool hasEmptyWindow(Window *windows, int size)
   return false;
 }
 
+// Return a pointer to an empty window if there is one or nullptr if there is
+// not one
 Window *getEmptyWindow(Window *windows, int size)
 {
   for (int i = 0; i < size; ++i) {
@@ -73,6 +79,37 @@ Window *getEmptyWindow(Window *windows, int size)
   }
 
   return nullptr;
+}
+
+// Returns true if all windows are empty, false if at least one is empty
+bool allWindowsEmpty(Window *windows, int size)
+{
+  for (int i = 0; i < size; ++i) {
+    if (windows[i].hasStudent()) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+// Returns the average of a doubly linked list of ints
+int getAvg(DoublyLinkedList<int> &list)
+{
+  int sum = 0;
+
+  ListNode<int> *curr = list.getFrontNode();
+  while (curr != nullptr) {
+    sum += curr->data;
+
+    curr = curr->next;
+  }
+
+  // cout << "list sum: " << sum << endl;
+  // cout << "list size: " << list.getSize() << endl;
+
+  // Cast getSize() to an int because it returns an unsigned int
+  return sum / (int)list.getSize();
 }
 
 int main(int argc, char **argv)
@@ -98,23 +135,22 @@ int main(int argc, char **argv)
 
   // Main simulation loop
   int currTime = 1;
+  DoublyLinkedList<int> studentIdleTimes;
   while (true) {
     cout << "currTime: " << currTime << endl;
 
-    // Provided that there is a window available, move students who have entered
-    // the line into an available window
+    // Move students who have entered the line into an available window,
+    // provided that a window is available
     while (!students->isEmpty() &&
            students->peek()->getEnterTime() <= currTime &&
            hasEmptyWindow(windows, numWindows)) {
       Student *currStudent = students->remove();
-      // cout << "Adding student with enter time: " <<
-      // currStudent->getEnterTime() << endl;
-
       Window *currWindow = getEmptyWindow(windows, numWindows);
-      // cout << "currWindow->getLastStudentTime(): "
-      //      << currWindow->getLastStudentTime() << endl;
-
       currWindow->setStudent(currStudent);
+
+      // Calculate and record student's idle time
+      int idleTime = currTime - currStudent->getEnterTime();
+      studentIdleTimes.insertBack(idleTime);
     }
 
     // Update the ticking times for the windows and the students
@@ -134,6 +170,10 @@ int main(int argc, char **argv)
         // so remove them from the window
         win.setStudent(nullptr);
         // FIXME: Possibly calculate and add student's idle time to list
+        // Ditto for window idle time? Maybe put these time calculations where
+        // students are being added to windows?
+
+        win.setLastStudentTime(currTime);
 
         // We will no longer use the student's info, so deallocate them
         delete student;
@@ -144,14 +184,19 @@ int main(int argc, char **argv)
     ++currTime;
 
     // Break if the simulation goes on too long
-    // TODO: Remove when rest of simulation implementation is finished
-    if (currTime > 20) {
+    // if (currTime > 100) {
+    //   break;
+    // }
+
+    if (allWindowsEmpty(windows, numWindows) && students->isEmpty()) {
       break;
     }
   }
 
-  // TODO: Deallocate memory for students still in windows?
-  // There is currently a memory leak that probably stems from that
+  cout << "Student idle times: " << endl;
+  studentIdleTimes.printList();
+  cout << "Average student idle time: " << endl;
+  cout << getAvg(studentIdleTimes) << endl;
 
   // Deallocate memory for individual students and then for queue
   while (!students->isEmpty()) {
