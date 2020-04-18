@@ -21,5 +21,5 @@ make
 
 After compiling, to run,
 ```
-./assignment4.exe
+./assignment4.exe [input file]
 ```
