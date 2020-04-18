@@ -11,6 +11,11 @@ bool Window::hasStudent()
   return student == nullptr;
 }
 
+int Window::calcIdleTime(int currTime)
+{
+  return whenLastStudentLeft - currTime;
+}
+
 int Window::getWhenLastStudentLeft()
 {
   return whenLastStudentLeft;
