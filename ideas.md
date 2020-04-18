@@ -34,3 +34,9 @@ list, as they will all be in there
 
 Might want to use #ifndef guards to protect from including a file multiple
 times
+
+Can find median by inserting times into a median list as soon as they are able
+to be calculated (& thus inserted into list)
+- Inserted in a way that keeps them in order: starting from beginning, find
+  first item that is greater than or equal to inserting item, insert item
+  right before that one
