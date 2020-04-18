@@ -6,13 +6,13 @@ private:
   Student *student;
 
   // Time when the most recent student left this window
-  int whenLastStudentLeft;
+  int lastStudentTime;
 
 public:
   Window();
 
-  int getWhenLastStudentLeft();
-  void setWhenLastStudentLeft(int time);
+  int getLastStudentTime();
+  void setLastStudentTime(int time);
   Student *getStudent();
   void setStudent(Student *student);
 

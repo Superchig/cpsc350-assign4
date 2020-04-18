@@ -30,6 +30,9 @@ public:
 
   // Returns the item at front of the list, without removing it
   T getFront();
+
+  // Returns a pointer to the first node
+  ListNode<T> *getFrontNode();
 };
 
 // Implementation of template class
@@ -115,7 +118,6 @@ T DoublyLinkedList<T>::removeFront()
 {
   if (size <= 0) {
     cerr << "Error: Trying to remove item from list of " << size << " elements." << endl;
-    return 0;
   }
 
   if (front->next) {
@@ -240,4 +242,10 @@ template <class T>
 T DoublyLinkedList<T>::getFront()
 {
   return front->data;
+}
+
+template <class T>
+ListNode<T> *DoublyLinkedList<T>::getFrontNode()
+{
+  return front;
 }

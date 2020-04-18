@@ -40,3 +40,6 @@ to be calculated (& thus inserted into list)
 - Inserted in a way that keeps them in order: starting from beginning, find
   first item that is greater than or equal to inserting item, insert item
   right before that one
+
+A student who enters at minute 1 & needs 5 minutes should leave at minute 6,
+it seems

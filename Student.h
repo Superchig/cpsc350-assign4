@@ -18,6 +18,7 @@ public:
 
   // Modifiers
   void setTimeNeeded(int timeNeeded);
+  void modTimeNeeded(int amount);
   void setEnterTime(int enterTime);
   void setExitTime(int exitTime);
 };

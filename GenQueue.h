@@ -43,7 +43,7 @@ T GenQueue<T>::remove()
 template <class T>
 void GenQueue<T>::insert(T item)
 {
-  items->insertFront(item);
+  items->insertBack(item);
 }
 
 template <class T>

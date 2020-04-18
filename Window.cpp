@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window::Window() : student(nullptr), whenLastStudentLeft(-1)
+Window::Window() : student(nullptr), lastStudentTime(-1)
 {
 }
 
@@ -8,22 +8,22 @@ bool Window::hasStudent()
 {
   // If student is null, then there is no student currently assigned to the
   // window
-  return student == nullptr;
+  return student != nullptr;
 }
 
 int Window::calcIdleTime(int currTime)
 {
-  return whenLastStudentLeft - currTime;
+  return lastStudentTime - currTime;
 }
 
-int Window::getWhenLastStudentLeft()
+int Window::getLastStudentTime()
 {
-  return whenLastStudentLeft;
+  return lastStudentTime;
 }
 
-void Window::setWhenLastStudentLeft(int time)
+void Window::setLastStudentTime(int time)
 {
-  whenLastStudentLeft = time;
+  lastStudentTime = time;
 }
 
 Student *Window::getStudent()

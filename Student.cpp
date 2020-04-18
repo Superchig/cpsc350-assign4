@@ -33,3 +33,8 @@ void Student::setExitTime(int exitTime)
 {
   this->exitTime = exitTime;
 }
+
+void Student::modTimeNeeded(int amount)
+{
+  this->timeNeeded += amount;
+}
