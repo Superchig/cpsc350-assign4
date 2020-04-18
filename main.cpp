@@ -1,5 +1,5 @@
 #include "GenQueue.h"
-#include "Student.h"
+#include "Window.h"
 #include <fstream>
 #include <iostream>
 
@@ -62,15 +62,15 @@ int main(int argc, char **argv)
 
   string fileName = argv[1];
 
-  // Read in the number of windows
+  // Read in the number of windows and create the Window array
   int numWindows;
   ifstream inputFile{fileName};
   inputFile >> numWindows;
   inputFile.close();
+  Window windows[numWindows]; // Number of windows doesn't change, can use array
 
+  // Read in the students and their corresponding info in from the file
   GenQueue<Student*> *students = readStudents(fileName);
-
-  cout << students->getSize() << endl;
 
   // Deallocate memory for individual students and then for queue
   while (!students->isEmpty()) {
