@@ -12,3 +12,14 @@ on pure virtual base classes.
 I used https://stackoverflow.com/questions/14965928/issue-with-inheritance-and-virtual-destructors-in-c
 to learn that the base class destructor must be virtual but not pure virtual in
 order to subclass it.
+
+## Compilation Instructions
+To compile,
+```
+make
+```
+
+After compiling, to run,
+```
+./assignment4.exe
+```
