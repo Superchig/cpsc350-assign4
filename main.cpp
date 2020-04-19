@@ -149,26 +149,6 @@ int main(int argc, char **argv)
   while (true) {
     deblog("currTime: " << currTime);
 
-    // Move students who have entered the line into an available window,
-    // provided that a window is available
-    while (!students->isEmpty() &&
-           students->peek()->getEnterTime() <= currTime &&
-           hasEmptyWindow(windows, numWindows)) {
-      Student *currStudent = students->remove();
-      Window *currWindow = getEmptyWindow(windows, numWindows);
-
-      // Add the student to the window
-      currWindow->setStudent(currStudent);
-
-      // Calculate and record the window's idle time
-      int windowIdleTime = currTime - currWindow->getLastStudentTime();
-      windowIdleTimes.insertBack(windowIdleTime);
-
-      // Calculate and record student's idle time
-      int studentIdleTime = currTime - currStudent->getEnterTime();
-      studentIdleTimes.insertBack(studentIdleTime);
-    }
-
     // Update the ticking times for the windows and the students
     for (int i = 0; i < numWindows; ++i) {
       Window &win = windows[i];
@@ -191,6 +171,26 @@ int main(int argc, char **argv)
       }
     }
 
+    // Move students who have entered the line into an available window,
+    // provided that a window is available
+    while (!students->isEmpty() &&
+           students->peek()->getEnterTime() <= currTime &&
+           hasEmptyWindow(windows, numWindows)) {
+      Student *currStudent = students->remove();
+      Window *currWindow = getEmptyWindow(windows, numWindows);
+
+      // Add the student to the window
+      currWindow->setStudent(currStudent);
+
+      // Calculate and record the window's idle time
+      int windowIdleTime = currTime - currWindow->getLastStudentTime();
+      windowIdleTimes.insertBack(windowIdleTime);
+
+      // Calculate and record student's idle time
+      int studentIdleTime = currTime - currStudent->getEnterTime();
+      studentIdleTimes.insertBack(studentIdleTime);
+    }
+
     // Update the time by a tick
     ++currTime;
 
@@ -201,6 +201,17 @@ int main(int argc, char **argv)
 
     if (allWindowsEmpty(windows, numWindows) && students->isEmpty()) {
       break;
+    }
+  }
+
+  // Calculate and record window idle times for windows that were empty towards
+  // the end of the simulation
+  for (int i = 0; i < numWindows; ++i) {
+    Window &win = windows[i];
+    int idleTime = (currTime - 1) - win.getLastStudentTime();
+
+    if (idleTime != 0) {
+      windowIdleTimes.insertBack(idleTime);
     }
   }
 

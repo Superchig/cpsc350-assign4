@@ -1,6 +1,6 @@
 #include "Window.h"
 
-Window::Window() : student(nullptr), lastStudentTime(-1)
+Window::Window() : student(nullptr), lastStudentTime(1)
 {
 }
 

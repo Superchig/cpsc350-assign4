@@ -43,3 +43,5 @@ to be calculated (& thus inserted into list)
 
 A student who enters at minute 1 & needs 5 minutes should leave at minute 6,
 it seems
+
+If a window obtains a student at time 1, does that count as an idle time of 0?
