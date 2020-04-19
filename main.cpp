@@ -184,10 +184,6 @@ int main(int argc, char **argv)
       // remove them from the window
       if (student->getTimeNeeded() <= 0) {
         win.setStudent(nullptr);
-        // FIXME: Possibly calculate and add student's idle time to list
-        // Ditto for window idle time? Maybe put these time calculations where
-        // students are being added to windows?
-
         win.setLastStudentTime(currTime);
 
         // We will no longer use the student's info, so deallocate them
