@@ -3,6 +3,15 @@
 #include <fstream>
 #include <iostream>
 
+// Use macros to output debug info
+#ifdef DEBUG
+#define debdo(X) X
+#define deblog(X) cout << X << endl
+#else
+#define debdo(X)
+#define deblog(X)
+#endif
+
 using namespace std;
 
 // Read students in from an input file
@@ -46,7 +55,7 @@ GenQueue<Student *> *readStudents(string fileName)
 
       students->insert(enteringStudent);
 
-      // enteringStudent->printStudent();
+      debdo(enteringStudent->printStudent());
     }
   }
 
@@ -136,8 +145,9 @@ int main(int argc, char **argv)
   // Main simulation loop
   int currTime = 1;
   DoublyLinkedList<int> studentIdleTimes;
+  DoublyLinkedList<int> windowIdleTimes;
   while (true) {
-    cout << "currTime: " << currTime << endl;
+    deblog("currTime: " << currTime);
 
     // Move students who have entered the line into an available window,
     // provided that a window is available
@@ -146,11 +156,17 @@ int main(int argc, char **argv)
            hasEmptyWindow(windows, numWindows)) {
       Student *currStudent = students->remove();
       Window *currWindow = getEmptyWindow(windows, numWindows);
+
+      // Add the student to the window
       currWindow->setStudent(currStudent);
 
+      // Calculate and record the window's idle time
+      int windowIdleTime = currTime - currWindow->getLastStudentTime();
+      windowIdleTimes.insertBack(windowIdleTime);
+
       // Calculate and record student's idle time
-      int idleTime = currTime - currStudent->getEnterTime();
-      studentIdleTimes.insertBack(idleTime);
+      int studentIdleTime = currTime - currStudent->getEnterTime();
+      studentIdleTimes.insertBack(studentIdleTime);
     }
 
     // Update the ticking times for the windows and the students
@@ -160,14 +176,13 @@ int main(int argc, char **argv)
         continue;
       }
 
+      // Update the time for the student
       Student *student = win.getStudent();
-      if (student->getTimeNeeded() > 0) {
-        // Update the time for the student
-        student->modTimeNeeded(-1);
-      }
-      else {
-        // The student has spent their necessary amount of time at the window,
-        // so remove them from the window
+      student->modTimeNeeded(-1);
+
+      // If the student has spent their necessary amount of time at the window,
+      // remove them from the window
+      if (student->getTimeNeeded() <= 0) {
         win.setStudent(nullptr);
         // FIXME: Possibly calculate and add student's idle time to list
         // Ditto for window idle time? Maybe put these time calculations where
@@ -193,10 +208,15 @@ int main(int argc, char **argv)
     }
   }
 
-  cout << "Student idle times: " << endl;
-  studentIdleTimes.printList();
+  deblog("Student idle times: ");
+  debdo(studentIdleTimes.printList());
   cout << "Average student idle time: " << endl;
   cout << getAvg(studentIdleTimes) << endl;
+
+  deblog("Window idle times: ");
+  debdo(windowIdleTimes.printList());
+  cout << "Average window idle time: " << endl;
+  cout << getAvg(windowIdleTimes) << endl;
 
   // Deallocate memory for individual students and then for queue
   while (!students->isEmpty()) {

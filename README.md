@@ -13,6 +13,9 @@ I used https://stackoverflow.com/questions/14965928/issue-with-inheritance-and-v
 to learn that the base class destructor must be virtual but not pure virtual in
 order to subclass it.
 
+I used http://www.gnu.org/software/make/manual/make.html#Target_002dspecific to
+predefine the DEBUG macro from the makefile
+
 ## Compilation Instructions
 To compile,
 ```
