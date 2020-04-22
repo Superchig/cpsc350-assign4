@@ -159,6 +159,12 @@ int main(int argc, char **argv)
   // Read in the number of windows and create the Window array
   int numWindows;
   ifstream inputFile{fileName};
+
+  if (!inputFile.is_open()) {
+    cout << "Error: Could not open " << fileName << endl;
+    return 1;
+  }
+
   inputFile >> numWindows;
   inputFile.close();
 
