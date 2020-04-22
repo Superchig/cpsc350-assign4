@@ -272,7 +272,7 @@ int main(int argc, char **argv)
   debdo(printInts(windowTimesArray, numWindows));
 
   double windowMeanTime = getMean(windowTimesArray, numWindows);
-  // Array is sorted, so we can just last item to get max
+  // Array is sorted, so we can just use last item to get max
   int windowLongestTime = windowTimesArray[numWindows - 1];
   int windowsAbove5 = getAmtAbove(windowTimesArray, numWindows, 5);
 
