@@ -251,7 +251,7 @@ int main(int argc, char **argv)
 
   // Calculate and print statistics on student idle times
 
-  deblog("Student idle times: ");
+  deblog("Student wait times: ");
   debdo(studentIdleTimes.printList());
 
   double studentMeanTime = getMean(studentTimesArray, numStudents);
@@ -260,9 +260,9 @@ int main(int argc, char **argv)
   int studentLongestTime = studentTimesArray[numStudents - 1];
   int studentsAbove10 = getAmtAbove(studentTimesArray, numStudents, 10);
 
-  cout << "Mean student idle time: " << studentMeanTime << endl;
-  cout << "Median student idle time: " << studentMedianTime << endl;
-  cout << "Longest student idle time: " << studentLongestTime << endl;
+  cout << "Mean student wait time: " << studentMeanTime << endl;
+  cout << "Median student wait time: " << studentMedianTime << endl;
+  cout << "Longest student wait time: " << studentLongestTime << endl;
   cout << "Number of students waiting over 10 minutes: " << studentsAbove10
        << endl;
 
@@ -272,7 +272,7 @@ int main(int argc, char **argv)
   debdo(printInts(windowTimesArray, numWindows));
 
   double windowMeanTime = getMean(windowTimesArray, numWindows);
-  // Array is sorted, so we can just last item to get max
+  // Array is sorted, so we can just use last item to get max
   int windowLongestTime = windowTimesArray[numWindows - 1];
   int windowsAbove5 = getAmtAbove(windowTimesArray, numWindows, 5);
 
