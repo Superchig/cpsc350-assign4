@@ -102,23 +102,21 @@ bool allWindowsEmpty(Window *windows, int size)
   return true;
 }
 
-// Returns the average of a doubly linked list of ints
-int getAvg(DoublyLinkedList<int> &list)
+// Returns the mean of an array of ints
+double getMean(int *items, int size)
 {
   int sum = 0;
-
-  ListNode<int> *curr = list.getFrontNode();
-  while (curr != nullptr) {
-    sum += curr->data;
-
-    curr = curr->next;
+  for (int i = 0; i < size; ++i) {
+    sum += items[i];
   }
+  return sum / size;
+}
 
-  // cout << "list sum: " << sum << endl;
-  // cout << "list size: " << list.getSize() << endl;
-
-  // Cast getSize() to an int because it returns an unsigned int
-  return sum / (int)list.getSize();
+void printInts(int *items, int size)
+{
+  for (int i = 0; i < size; ++i) {
+    cout << items[i] << endl;
+  }
 }
 
 int main(int argc, char **argv)
@@ -145,7 +143,6 @@ int main(int argc, char **argv)
   // Main simulation loop
   int currTime = 1;
   DoublyLinkedList<int> studentIdleTimes;
-  DoublyLinkedList<int> windowIdleTimes;
   while (true) {
     deblog("currTime: " << currTime);
 
@@ -153,6 +150,7 @@ int main(int argc, char **argv)
     for (int i = 0; i < numWindows; ++i) {
       Window &win = windows[i];
       if (!win.hasStudent()) {
+        win.modIdleTime(1);
         continue;
       }
 
@@ -182,10 +180,6 @@ int main(int argc, char **argv)
       // Add the student to the window
       currWindow->setStudent(currStudent);
 
-      // Calculate and record the window's idle time
-      int windowIdleTime = currTime - currWindow->getLastStudentTime();
-      windowIdleTimes.insertBack(windowIdleTime);
-
       // Calculate and record student's idle time
       int studentIdleTime = currTime - currStudent->getEnterTime();
       studentIdleTimes.insertBack(studentIdleTime);
@@ -204,26 +198,30 @@ int main(int argc, char **argv)
     }
   }
 
-  // Calculate and record window idle times for windows that were empty towards
-  // the end of the simulation
-  for (int i = 0; i < numWindows; ++i) {
-    Window &win = windows[i];
-    int idleTime = (currTime - 1) - win.getLastStudentTime();
+  // Copy student idle times into an array to use for calculations
+  int numStudents = studentIdleTimes.getSize();
+  int studentTimesArray[numStudents];
+  ListNode<int> *currTimeNode = studentIdleTimes.getFrontNode();
+  for (int i = 0; i < numStudents; ++i) {
+    studentTimesArray[i] = currTimeNode->data;
+    currTimeNode = currTimeNode->next;
+  }
 
-    if (idleTime != 0) {
-      windowIdleTimes.insertBack(idleTime);
-    }
+  // Copy window idle times into an array to use for calculations
+  int windowTimesArray[numWindows];
+  for (int i = 0; i < numWindows; ++i) {
+    windowTimesArray[i] = windows[i].getIdleTime();
   }
 
   deblog("Student idle times: ");
   debdo(studentIdleTimes.printList());
   cout << "Average student idle time: " << endl;
-  cout << getAvg(studentIdleTimes) << endl;
+  cout << getMean(studentTimesArray, studentIdleTimes.getSize()) << endl;
 
   deblog("Window idle times: ");
-  debdo(windowIdleTimes.printList());
+  debdo(printInts(windowTimesArray, numWindows));
   cout << "Average window idle time: " << endl;
-  cout << getAvg(windowIdleTimes) << endl;
+  cout << getMean(windowTimesArray, numWindows) << endl;
 
   // Deallocate memory for individual students and then for queue
   while (!students->isEmpty()) {
