@@ -16,6 +16,9 @@ order to subclass it.
 I used http://www.gnu.org/software/make/manual/make.html#Target_002dspecific to
 predefine the DEBUG macro from the makefile
 
+I used http://www.cplusplus.com/reference/algorithm/sort/ for information on how
+to use the sort function.
+
 ## Compilation Instructions
 To compile,
 ```

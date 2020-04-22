@@ -1,5 +1,6 @@
 #include "GenQueue.h"
 #include "Window.h"
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 
@@ -109,7 +110,34 @@ double getMean(int *items, int size)
   for (int i = 0; i < size; ++i) {
     sum += items[i];
   }
-  return sum / size;
+  return (double)sum / size;
+}
+
+// Returns the median item of an array of ints, assuming that it is sorted
+double getMedianOfSorted(int *items, int size)
+{
+  if (size % 2 == 0) {
+    int midFirst = items[(size / 2) - 1];
+    int midSecond = items[(size / 2)];
+    return (midFirst + midSecond) / 2.0;
+  }
+  else {
+    return items[size / 2];
+  }
+}
+
+// Returns the number of ints above a specified bound
+int getAmtAbove(int *items, int size, int bound)
+{
+  int count = 0;
+
+  for (int i = 0; i < size; ++i) {
+    if (items[i] > bound) {
+      ++count;
+    }
+  }
+
+  return count;
 }
 
 void printInts(int *items, int size)
@@ -141,7 +169,7 @@ int main(int argc, char **argv)
   GenQueue<Student *> *students = readStudents(fileName);
 
   // Main simulation loop
-  int currTime = 1;
+  int currTime = 0;
   DoublyLinkedList<int> studentIdleTimes;
   while (true) {
     deblog("currTime: " << currTime);
@@ -198,7 +226,7 @@ int main(int argc, char **argv)
     }
   }
 
-  // Copy student idle times into an array to use for calculations
+  // Copy student idle times into an array to use for calculations, then sort it
   int numStudents = studentIdleTimes.getSize();
   int studentTimesArray[numStudents];
   ListNode<int> *currTimeNode = studentIdleTimes.getFrontNode();
@@ -206,22 +234,45 @@ int main(int argc, char **argv)
     studentTimesArray[i] = currTimeNode->data;
     currTimeNode = currTimeNode->next;
   }
+  sort(studentTimesArray, studentTimesArray + numStudents);
 
-  // Copy window idle times into an array to use for calculations
+  // Copy window idle times into an array to use for calculations, then sort it
   int windowTimesArray[numWindows];
   for (int i = 0; i < numWindows; ++i) {
     windowTimesArray[i] = windows[i].getIdleTime();
   }
+  sort(windowTimesArray, windowTimesArray + numWindows);
+
+  // Calculate and print statistics on student idle times
 
   deblog("Student idle times: ");
   debdo(studentIdleTimes.printList());
-  cout << "Average student idle time: " << endl;
-  cout << getMean(studentTimesArray, studentIdleTimes.getSize()) << endl;
+
+  double studentMeanTime = getMean(studentTimesArray, numStudents);
+  double studentMedianTime = getMedianOfSorted(studentTimesArray, numStudents);
+  // Array is sorted, so can just use last item to get max
+  int studentLongestTime = studentTimesArray[numStudents - 1];
+  int studentsAbove10 = getAmtAbove(studentTimesArray, numStudents, 10);
+
+  cout << "Mean student idle time: " << studentMeanTime << endl;
+  cout << "Median student idle time: " << studentMedianTime << endl;
+  cout << "Longest student idle time: " << studentLongestTime << endl;
+  cout << "Number of students waiting over 10 minutes: " << studentsAbove10
+       << endl;
+
+  // Calculate and print statistics on window idle times
 
   deblog("Window idle times: ");
   debdo(printInts(windowTimesArray, numWindows));
-  cout << "Average window idle time: " << endl;
-  cout << getMean(windowTimesArray, numWindows) << endl;
+
+  double windowMeanTime = getMean(windowTimesArray, numWindows);
+  // Array is sorted, so we can just last item to get max
+  int windowLongestTime = windowTimesArray[numWindows - 1];
+  int windowsAbove5 = getAmtAbove(windowTimesArray, numWindows, 5);
+
+  cout << "Mean window idle time: " << windowMeanTime << endl;
+  cout << "Longest window idle time: " << windowLongestTime << endl;
+  cout << "Number of windows idle for over 5 minutes: " << windowsAbove5 << endl;
 
   // Deallocate memory for individual students and then for queue
   while (!students->isEmpty()) {
