@@ -1,12 +1,11 @@
 // Header equivalent
 #include "ListNode.h"
-#include "List.h"
 #include <iostream>
 
 using namespace std;
 
 template <class T>
-class DoublyLinkedList : public List<T> {
+class DoublyLinkedList {
 private:
   ListNode<T> *front;
   ListNode<T> *back;

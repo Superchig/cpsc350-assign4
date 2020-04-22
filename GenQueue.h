@@ -1,9 +1,9 @@
-#include "DoublyLinkedList.h"
+#include "List.h"
 
 template <class T>
 class GenQueue {
 private:
-  DoublyLinkedList<T> *items;
+  MyList<T> *items;
 
 public:
   // Default constructor
@@ -25,7 +25,7 @@ public:
 template <class T>
 GenQueue<T>::GenQueue()
 {
-  items = new DoublyLinkedList<T>();
+  items = new MyList<T>();
 }
 
 template <class T>
