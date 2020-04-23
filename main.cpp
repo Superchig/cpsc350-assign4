@@ -180,6 +180,22 @@ int main(int argc, char **argv)
   while (true) {
     deblog("currTime: " << currTime);
 
+    // Move students who have entered the line into an available window,
+    // provided that a window is available
+    while (!students->isEmpty() &&
+           students->peek()->getEnterTime() <= currTime &&
+           hasEmptyWindow(windows, numWindows)) {
+      Student *currStudent = students->remove();
+      Window *currWindow = getEmptyWindow(windows, numWindows);
+
+      // Add the student to the window
+      currWindow->setStudent(currStudent);
+
+      // Calculate and record student's idle time
+      int studentIdleTime = currTime - currStudent->getEnterTime();
+      studentIdleTimes.insertBack(studentIdleTime);
+    }
+
     // Update the ticking times for the windows and the students
     for (int i = 0; i < numWindows; ++i) {
       Window &win = windows[i];
@@ -201,22 +217,6 @@ int main(int argc, char **argv)
         // We will no longer use the student's info, so deallocate them
         delete student;
       }
-    }
-
-    // Move students who have entered the line into an available window,
-    // provided that a window is available
-    while (!students->isEmpty() &&
-           students->peek()->getEnterTime() <= currTime &&
-           hasEmptyWindow(windows, numWindows)) {
-      Student *currStudent = students->remove();
-      Window *currWindow = getEmptyWindow(windows, numWindows);
-
-      // Add the student to the window
-      currWindow->setStudent(currStudent);
-
-      // Calculate and record student's idle time
-      int studentIdleTime = currTime - currStudent->getEnterTime();
-      studentIdleTimes.insertBack(studentIdleTime);
     }
 
     // Update the time by a tick
